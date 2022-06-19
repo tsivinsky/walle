@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
+	"strings"
 
 	"github.com/tsivinsky/walle/internal/pkg/config"
 )
@@ -38,8 +40,6 @@ func main() {
 	}
 
 	if restoringWallpaper {
-		// TODO: call swaybg with earlier saved image
-
 		imagePath := conf.ImagePath
 		if imagePath == "" {
 			fmt.Println("First, you need to call `walle -i ./path/to/image.png` to set some wallpaper")
@@ -53,7 +53,14 @@ func main() {
 			log.Fatal(err)
 		}
 	} else if image != "" {
-		// TODO: save image path in config
+		if !strings.HasPrefix(image, "/") {
+			cwd, err := os.Getwd()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			image = path.Join(cwd, image)
+		}
 
 		conf.ImagePath = image
 		err = conf.Save()
