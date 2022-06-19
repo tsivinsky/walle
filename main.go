@@ -5,22 +5,24 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path"
 	"strings"
 
 	"github.com/tsivinsky/walle/internal/pkg/config"
+	"github.com/tsivinsky/walle/internal/pkg/wallpaper"
 )
 
 // flags
 var (
-	image              string
-	restoringWallpaper bool
+	image               string
+	setImageImmediately bool
+	restoringWallpaper  bool
 )
 
 func main() {
 	flag.StringVar(&image, "i", "", "walle -i ./path/to/image.png")
 	flag.BoolVar(&restoringWallpaper, "restore", false, "walle --restore")
+	flag.BoolVar(&setImageImmediately, "s", false, "walle -i ./path/to/image.png -s")
 
 	flag.Parse()
 
@@ -46,9 +48,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		exec.Command("killall", "swaybg").Run()
-
-		err = exec.Command("swaybg", "-i", imagePath).Run()
+		err = wallpaper.SetImage(imagePath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -62,10 +62,17 @@ func main() {
 			image = path.Join(cwd, image)
 		}
 
-		conf.ImagePath = image
-		err = conf.Save()
-		if err != nil {
-			log.Fatal(err)
+		if setImageImmediately {
+			err = wallpaper.SetImage(image)
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			conf.ImagePath = image
+			err = conf.Save()
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 }
