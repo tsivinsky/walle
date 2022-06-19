@@ -29,11 +29,11 @@ walle -i ./path/to/image.jpg -s
 ### Build binary
 
 ```bash
-make build
+./build.sh
 ```
 
 ### Install binary on system
 
 ```bash
-sudo make install
+./install.sh
 ```
