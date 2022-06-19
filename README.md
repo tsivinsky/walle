@@ -2,6 +2,12 @@
 
 simple program to set wallpapers in SwayWM. it simply wraps `swaybg`.
 
+## Install
+
+```bash
+go install github.com/tsivinsky/walle@latest
+```
+
 ## Usage
 
 ### Set wallpaper
