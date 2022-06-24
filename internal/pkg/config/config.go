@@ -13,7 +13,7 @@ type Config struct {
 	ImagePath string `json:"image-path"`
 }
 
-func getConfigDir() (string, error) {
+func GetConfigDir() (string, error) {
 	userConfigDir, err := os.UserConfigDir()
 	if err != nil {
 		return "", err
@@ -25,7 +25,7 @@ func getConfigDir() (string, error) {
 }
 
 func getConfigPath() (string, error) {
-	configDir, err := getConfigDir()
+	configDir, err := GetConfigDir()
 	if err != nil {
 		return "", err
 	}
@@ -36,7 +36,7 @@ func getConfigPath() (string, error) {
 }
 
 func CreateConfigPathIfNotExist() error {
-	configDir, err := getConfigDir()
+	configDir, err := GetConfigDir()
 	if err != nil {
 		return err
 	}

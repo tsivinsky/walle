@@ -53,25 +53,43 @@ func main() {
 			log.Fatal(err)
 		}
 	} else if image != "" {
-		if !strings.HasPrefix(image, "/") {
-			cwd, err := os.Getwd()
+		if strings.HasPrefix(image, "http") {
+			imageData, ext, err := wallpaper.GetImageFromHTTPUri(image)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			image = path.Join(cwd, image)
-		}
+			filePath, err := wallpaper.SaveHTTPWallpaper(imageData, ext)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		if setImageImmediately {
-			err = wallpaper.SetImage(image)
+			conf.ImagePath = filePath
+			err = conf.Save()
 			if err != nil {
 				log.Fatal(err)
 			}
 		} else {
-			conf.ImagePath = image
-			err = conf.Save()
-			if err != nil {
-				log.Fatal(err)
+			if !strings.HasPrefix(image, "/") {
+				cwd, err := os.Getwd()
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				image = path.Join(cwd, image)
+			}
+
+			if setImageImmediately {
+				err = wallpaper.SetImage(image)
+				if err != nil {
+					log.Fatal(err)
+				}
+			} else {
+				conf.ImagePath = image
+				err = conf.Save()
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 	}

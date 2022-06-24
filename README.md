@@ -30,6 +30,12 @@ exec_always --no-startup-id walle --restore
 walle -i ./path/to/image.jpg -s
 ```
 
+### Set wallpaper from internet
+
+```bash
+walle -i "https://images.unsplash.com/photo-1567447343911-56a8b455318e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+```
+
 ## Dev environment
 
 ### Build binary
